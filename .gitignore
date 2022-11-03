@@ -251,15 +251,15 @@ paket-files/
 .idea/
 *.sln.iml
 
-# Admin
-src/DuyA.Admin.Web/Logs/*
-src/DuyA.Admin.Web/Logs/*
-src/DuyA.Admin.AuthServer/Logs/*
-src/DuyA.Admin.HttpApi.Host/Logs/*
-src/DuyA.Admin.HttpApi.HostWithIds/Logs/*
-src/DuyA.Admin.DbMigrator/Logs/*
-src/DuyA.Admin.Blazor.Server/Logs/*
-src/DuyA.Admin.Blazor.Server.Tiered/Logs/*
+# AdminSSO
+src/AdminSSO.Web/Logs/*
+src/AdminSSO.Web/Logs/*
+src/AdminSSO.AuthServer/Logs/*
+src/AdminSSO.HttpApi.Host/Logs/*
+src/AdminSSO.HttpApi.HostWithIds/Logs/*
+src/AdminSSO.DbMigrator/Logs/*
+src/AdminSSO.Blazor.Server/Logs/*
+src/AdminSSO.Blazor.Server.Tiered/Logs/*
 
 # Use abp install-libs to restore.
 **/wwwroot/libs/*
