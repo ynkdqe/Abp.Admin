@@ -32,6 +32,8 @@ namespace AdminSSO.Users
         public int? DistrictId { get; set; }
         public int? WardId { get; set; }
         public string Address { get; set; }
+        //public string Password { get; set; }
+        //public string PasswordSalt { get; set; }
         public bool? IsActive { get; set; }
         public bool? IsDeleted { get; set; }
         public DateTime? LastLoginDate { get; set; }

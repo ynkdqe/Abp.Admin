@@ -10,5 +10,8 @@ namespace AdminSSO.Users
     {
         Task<List<UserDto>> GetList();
         Task<UserDto> GetUserById(int Id);
+        //Task<UserDto> Register(UserInputCreateDto input);
+
+        //Task CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt);
     }
 }

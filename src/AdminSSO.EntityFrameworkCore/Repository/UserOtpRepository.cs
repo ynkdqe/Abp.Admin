@@ -14,9 +14,11 @@ namespace AdminSSO.Repository
     public class UserOtpRepository : EfCoreRepository<AdminSSODbContext, UserOtp>, IUserOtpRepository
     {
         readonly AdminSSODbContext _dbContext;
+        private readonly IDbContextProvider<AdminSSODbContext> _dbContextProvider;
         public UserOtpRepository(IDbContextProvider<AdminSSODbContext> dbContextProvider, AdminSSODbContext dbContext) : base(dbContextProvider)
         {
             _dbContext = dbContext;
+            _dbContextProvider = dbContextProvider;
         }
 
         public List<UserOtp> GetAll()

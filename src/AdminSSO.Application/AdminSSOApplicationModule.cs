@@ -5,7 +5,8 @@ namespace AdminSSO;
 
 [DependsOn(
     typeof(AdminSSODomainModule),
-    typeof(AdminSSOApplicationContractsModule)
+    typeof(AdminSSOApplicationContractsModule),
+    typeof(AbpAutoMapperModule)
     )]
 public class AdminSSOApplicationModule : AbpModule
 {
