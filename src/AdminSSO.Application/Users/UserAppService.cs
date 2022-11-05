@@ -13,7 +13,7 @@ using Volo.Abp.Validation;
 
 namespace AdminSSO.Users
 {
-    public class UserAppService : AdminSSOAppService, ITransientDependency, IValidationEnabled, IUserService
+    public class UserAppService : AdminSSOAppService, ITransientDependency, IValidationEnabled, IUserAppService
     {
         IUserRepository _userRepository;
         private readonly ILogger<UserAppService> _log;
@@ -38,14 +38,14 @@ namespace AdminSSO.Users
             return ObjectMapper.Map<User, UserDto>(user);
         }
 
-        void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
-        {
-            using(var hmac = new HMACSHA256())
-            {
-                passwordSalt = hmac.Key;
-                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-            }
-        }
+        //void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        //{
+        //    using(var hmac = new HMACSHA256())
+        //    {
+        //        passwordSalt = hmac.Key;
+        //        passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+        //    }
+        //}
 
         //public Task<UserDto> Register(UserInputCreateDto input)
         //{

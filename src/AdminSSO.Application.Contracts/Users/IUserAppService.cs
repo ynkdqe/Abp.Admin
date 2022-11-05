@@ -6,7 +6,7 @@ using Volo.Abp.Application.Services;
 
 namespace AdminSSO.Users
 {
-    public interface IUserService : IApplicationService
+    public interface IUserAppService : IApplicationService
     {
         Task<List<UserDto>> GetList();
         Task<UserDto> GetUserById(int Id);

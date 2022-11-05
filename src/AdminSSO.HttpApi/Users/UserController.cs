@@ -13,21 +13,21 @@ namespace AdminSSO.Users
     [Area(AdminSSORemoteServiceConsts.ModuleName)]
     [RemoteService(Name = AdminSSORemoteServiceConsts.RemoteServiceName)]
     [Route("api/user/user-profile")]
-    public class UserController : ControllerBase, IUserService
+    public class UserController : ControllerBase, IUserAppService
     {
-        private readonly IUserService _userAppService;
-        public UserController(IUserService userAppService)
+        private readonly IUserAppService _userAppService;
+        public UserController(IUserAppService userAppService)
         {
             _userAppService = userAppService;
         }
         [HttpGet]
-        [Route("get-list-httpapi")]
+        [Route("get-list")]
         public Task<List<UserDto>> GetList()
         {
             return _userAppService.GetList();
         }
         [HttpGet]
-        [Route("get-by-id-httpapi")]
+        [Route("get-by-id")]
         public Task<UserDto> GetUserById(int Id)
         {
             return _userAppService.GetUserById(Id);
