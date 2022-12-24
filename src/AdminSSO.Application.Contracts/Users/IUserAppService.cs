@@ -1,16 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using AdminSSO.Dtos;
 using System.Threading.Tasks;
+using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.DependencyInjection;
 
 namespace AdminSSO.Users
 {
-    public interface IUserAppService : IApplicationService
+    public interface IUserAppService : IApplicationService, ISingletonDependency
     {
-        Task<List<UserDto>> GetList();
+        Task<CustomPagedResultDto<UserDto>> GetList(UserInputSearchDto searchDto);
         Task<UserDto> GetUserById(int Id);
-        //Task<UserDto> Register(UserInputCreateDto input);
+        Task<CreateUserResponseDto> Create(UserInputCreateDto createDto);
+        Task<UserDto> Update(UserInputUpdateDto updateDto);
+        Task<AutoGenerateInfoUserDto> AutoGenerateInfoUser(string fullName);
+        Task<LoginResponse> Login(string userName,string password);
 
         //Task CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt);
     }

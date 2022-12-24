@@ -8,9 +8,7 @@ public class AdminSSOPermissionDefinitionProvider : PermissionDefinitionProvider
 {
     public override void Define(IPermissionDefinitionContext context)
     {
-        var myGroup = context.AddGroup(AdminSSOPermissions.GroupName);
-        //Define your own permissions here. Example:
-        //myGroup.AddPermission(AdminSSOPermissions.MyPermission1, L("Permission:MyPermission1"));
+        var myGroup = context.AddGroup(AdminSSOPermissions.GroupName, L("Permission:AdminSSO"));
     }
 
     private static LocalizableString L(string name)

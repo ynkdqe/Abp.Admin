@@ -1,32 +1,32 @@
 ﻿using Localization.Resources.AbpUi;
 using AdminSSO.Localization;
+using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
-using Volo.Abp.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AdminSSO;
+
 [DependsOn(
     typeof(AdminSSOApplicationContractsModule),
-    //typeof(AbpAccountHttpApiModule)
-    //typeof(AbpIdentityHttpApiModule)
-    typeof(AbpAspNetCoreMvcModule)
-    )]
+    typeof(AbpAspNetCoreMvcModule))]
 public class AdminSSOHttpApiModule : AbpModule
 {
-    public override void ConfigureServices(ServiceConfigurationContext context)
+    public override void PreConfigureServices(ServiceConfigurationContext context)
     {
-        ConfigureLocalization();
+        PreConfigure<IMvcBuilder>(mvcBuilder =>
+        {
+            mvcBuilder.AddApplicationPartIfNotExists(typeof(AdminSSOHttpApiModule).Assembly);
+        });
     }
 
-    private void ConfigureLocalization()
+    public override void ConfigureServices(ServiceConfigurationContext context)
     {
         Configure<AbpLocalizationOptions>(options =>
         {
             options.Resources
                 .Get<AdminSSOResource>()
-                .AddBaseTypes(
-                    typeof(AbpUiResource)
-                );
+                .AddBaseTypes(typeof(AbpUiResource));
         });
     }
 }

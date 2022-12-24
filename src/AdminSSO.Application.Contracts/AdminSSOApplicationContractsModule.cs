@@ -1,16 +1,15 @@
-﻿using Volo.Abp.Modularity;
-using Volo.Abp.ObjectExtending;
+﻿using Volo.Abp.Application;
+using Volo.Abp.Modularity;
+using Volo.Abp.Authorization;
 
 namespace AdminSSO;
 
 [DependsOn(
     typeof(AdminSSODomainSharedModule),
-    typeof(AbpObjectExtendingModule)
-)]
+    typeof(AbpDddApplicationContractsModule),
+    typeof(AbpAuthorizationModule)
+    )]
 public class AdminSSOApplicationContractsModule : AbpModule
 {
-    public override void PreConfigureServices(ServiceConfigurationContext context)
-    {
-        AdminSSODtoExtensions.Configure();
-    }
+
 }

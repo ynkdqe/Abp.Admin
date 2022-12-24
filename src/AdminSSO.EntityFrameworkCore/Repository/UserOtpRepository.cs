@@ -1,6 +1,5 @@
 ﻿using AdminSSO.EntityFrameworkCore;
 using AdminSSO.UserOtps;
-using AdminSSO.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,8 +24,7 @@ namespace AdminSSO.Repository
         {
             //_dbContext.LoadStoredProc
             //var db = await GetDbContextAsync();
-            var list = _dbContext.LoadStoredProc("PRC_UserOtp_GetAll").ExecuteStoredProc<UserOtp>().ToList();
-            return list;
+            return null;
         }
     }
 }

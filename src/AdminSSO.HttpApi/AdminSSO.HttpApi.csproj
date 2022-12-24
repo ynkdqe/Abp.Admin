@@ -8,12 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AdminSSO.Application.Contracts\AdminSSO.Application.Contracts.csproj" />
+    <Compile Remove="Samples\**" />
+    <EmbeddedResource Remove="Samples\**" />
+    <None Remove="Samples\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ConfigureAwait.Fody" Version="3.3.1" />
     <PackageReference Include="Volo.Abp.AspNetCore.Mvc" Version="6.0.1" />
+    <ProjectReference Include="..\AdminSSO.Application.Contracts\AdminSSO.Application.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

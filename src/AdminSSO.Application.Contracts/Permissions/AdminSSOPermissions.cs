@@ -1,9 +1,13 @@
-﻿namespace AdminSSO.Permissions;
+﻿using Volo.Abp.Reflection;
 
-public static class AdminSSOPermissions
+namespace AdminSSO.Permissions;
+
+public class AdminSSOPermissions
 {
     public const string GroupName = "AdminSSO";
 
-    //Add your own permission names. Example:
-    //public const string MyPermission1 = GroupName + ".MyPermission1";
+    public static string[] GetAll()
+    {
+        return ReflectionHelper.GetPublicConstantsRecursively(typeof(AdminSSOPermissions));
+    }
 }

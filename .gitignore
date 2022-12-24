@@ -252,14 +252,11 @@ paket-files/
 *.sln.iml
 
 # AdminSSO
-src/AdminSSO.Web/Logs/*
-src/AdminSSO.Web/Logs/*
-src/AdminSSO.AuthServer/Logs/*
-src/AdminSSO.HttpApi.Host/Logs/*
-src/AdminSSO.HttpApi.HostWithIds/Logs/*
-src/AdminSSO.DbMigrator/Logs/*
-src/AdminSSO.Blazor.Server/Logs/*
-src/AdminSSO.Blazor.Server.Tiered/Logs/*
+host/AdminSSO.AuthServer/Logs/logs.txt
+host/AdminSSO.HttpApi.Host/Logs/logs.txt
+host/AdminSSO.Web.Host/Logs/logs.txt
+host/AdminSSO.Web.Unified/Logs/logs.txt
+host/AdminSSO.Blazor.Server.Host/Logs/logs.txt
 
 # Use abp install-libs to restore.
 **/wwwroot/libs/*

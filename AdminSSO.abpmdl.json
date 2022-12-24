@@ -1,0 +1,79 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {},
+      "host": {}
+    }
+  },
+  "packages": {
+    "AdminSSO.Domain.Shared": {
+      "path": "src/AdminSSO.Domain.Shared/AdminSSO.Domain.Shared.abppkg.json",
+      "folder": "src"
+    },
+    "AdminSSO.Domain": {
+      "path": "src/AdminSSO.Domain/AdminSSO.Domain.abppkg.json",
+      "folder": "src"
+    },
+    "AdminSSO.Application.Contracts": {
+      "path": "src/AdminSSO.Application.Contracts/AdminSSO.Application.Contracts.abppkg.json",
+      "folder": "src"
+    },
+    "AdminSSO.Application": {
+      "path": "src/AdminSSO.Application/AdminSSO.Application.abppkg.json",
+      "folder": "src"
+    },
+    "AdminSSO.EntityFrameworkCore": {
+      "path": "src/AdminSSO.EntityFrameworkCore/AdminSSO.EntityFrameworkCore.abppkg.json",
+      "folder": "src"
+    },
+    "AdminSSO.MongoDB": {
+      "path": "src/AdminSSO.MongoDB/AdminSSO.MongoDB.abppkg.json",
+      "folder": "src"
+    },
+    "AdminSSO.HttpApi": {
+      "path": "src/AdminSSO.HttpApi/AdminSSO.HttpApi.abppkg.json",
+      "folder": "src"
+    },
+    "AdminSSO.HttpApi.Client": {
+      "path": "src/AdminSSO.HttpApi.Client/AdminSSO.HttpApi.Client.abppkg.json",
+      "folder": "src"
+    },
+    "AdminSSO.TestBase": {
+      "path": "test/AdminSSO.TestBase/AdminSSO.TestBase.abppkg.json",
+      "folder": "test"
+    },
+    "AdminSSO.EntityFrameworkCore.Tests": {
+      "path": "test/AdminSSO.EntityFrameworkCore.Tests/AdminSSO.EntityFrameworkCore.Tests.abppkg.json",
+      "folder": "test"
+    },
+    "AdminSSO.MongoDB.Tests": {
+      "path": "test/AdminSSO.MongoDB.Tests/AdminSSO.MongoDB.Tests.abppkg.json",
+      "folder": "test"
+    },
+    "AdminSSO.Domain.Tests": {
+      "path": "test/AdminSSO.Domain.Tests/AdminSSO.Domain.Tests.abppkg.json",
+      "folder": "test"
+    },
+    "AdminSSO.Application.Tests": {
+      "path": "test/AdminSSO.Application.Tests/AdminSSO.Application.Tests.abppkg.json",
+      "folder": "test"
+    },
+    "AdminSSO.HttpApi.Host": {
+      "path": "host/AdminSSO.HttpApi.Host/AdminSSO.HttpApi.Host.abppkg.json",
+      "folder": "host"
+    },
+    "AdminSSO.HttpApi.Client.ConsoleTestApp": {
+      "path": "test/AdminSSO.HttpApi.Client.ConsoleTestApp/AdminSSO.HttpApi.Client.ConsoleTestApp.abppkg.json",
+      "folder": "test"
+    },
+    "AdminSSO.AuthServer": {
+      "path": "host/AdminSSO.AuthServer/AdminSSO.AuthServer.abppkg.json",
+      "folder": "host"
+    },
+    "AdminSSO.Host.Shared": {
+      "path": "host/AdminSSO.Host.Shared/AdminSSO.Host.Shared.abppkg.json",
+      "folder": "host"
+    }
+  }
+}

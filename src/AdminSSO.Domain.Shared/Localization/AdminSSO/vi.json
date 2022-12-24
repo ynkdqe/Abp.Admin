@@ -1,8 +1,13 @@
 {
   "culture": "vi",
   "texts": {
-    "Menu:Home": "Trang chủ",
-    "Welcome": "Chào mừng bạn",
-    "LongWelcomeMessage": "Chào mừng bạn đến ứng dụng. Đây là một dự án khởi nghiệp dựa trên khung ABP. Để biết thêm thông tin, hãy truy cập abp.io."
+    "MyAccount": "Tài khoản của tôi",
+    "SamplePageMessage": "Trang mẫu cho mô-đun AdminSSO",
+    "User:010000": "Insert successfully!",
+    "User:010001": "Insert failed.Check details!",
+    "User:010002": "UserName is already!",
+    "User:010003": "UserCode is already!",
+    "User:010004": "Email is already!",
+    "User:010005": "Phone is already!"
   }
 }

@@ -8,8 +8,7 @@ using Volo.Abp.Testing;
 
 namespace AdminSSO;
 
-/* All test classes are derived from this class, directly or indirectly.
- */
+/* All test classes are derived from this class, directly or indirectly. */
 public abstract class AdminSSOTestBase<TStartupModule> : AbpIntegratedTest<TStartupModule>
     where TStartupModule : IAbpModule
 {

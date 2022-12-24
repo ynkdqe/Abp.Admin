@@ -7,8 +7,8 @@ namespace AdminSSO.Districts
 {
     public class DistrictDto : EntityDto<int>
     {
-        public string Name { get; set; }
         public int? CityId { get; set; }
+        public string Name { get; set; }
         public string Desciption { get; set; }
         public int? DisplayOrder { get; set; }
         public bool? IsShow { get; set; }

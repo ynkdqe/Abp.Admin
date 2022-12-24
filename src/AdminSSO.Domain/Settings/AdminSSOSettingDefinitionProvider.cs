@@ -6,7 +6,8 @@ public class AdminSSOSettingDefinitionProvider : SettingDefinitionProvider
 {
     public override void Define(ISettingDefinitionContext context)
     {
-        //Define your own settings here. Example:
-        //context.Add(new SettingDefinition(AdminSSOSettings.MySetting1));
+        /* Define module settings here.
+         * Use names from AdminSSOSettings class.
+         */
     }
 }

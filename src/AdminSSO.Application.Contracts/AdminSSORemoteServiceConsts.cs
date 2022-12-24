@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace AdminSSO;
 
-namespace AdminSSO
+public class AdminSSORemoteServiceConsts
 {
-    public class AdminSSORemoteServiceConsts
-    {
-        public const string RemoteServiceName = "AdminSSOApi";
+    public const string RemoteServiceName = "AdminSSO";
 
-        public const string ModuleName = "AdminSSOApi";
-    }
+    public const string ModuleName = "adminSSO";
 }

@@ -1,0 +1,7 @@
+{
+  "modules": {
+    "AdminSSO": {
+      "path": "AdminSSO.abpmdl.json"
+    }
+  }
+}

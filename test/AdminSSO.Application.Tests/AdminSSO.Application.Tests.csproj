@@ -10,11 +10,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\AdminSSO.Application\AdminSSO.Application.csproj" />
     <ProjectReference Include="..\AdminSSO.Domain.Tests\AdminSSO.Domain.Tests.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
-    <PackageReference Include="Volo.Abp.BackgroundJobs" Version="6.0.1" />
   </ItemGroup>
 
 </Project>
