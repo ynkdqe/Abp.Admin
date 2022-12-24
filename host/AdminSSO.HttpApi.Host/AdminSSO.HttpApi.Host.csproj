@@ -21,6 +21,7 @@
     <PackageReference Include="Volo.Abp.AspNetCore.Mvc.UI.MultiTenancy" Version="6.0.1" />
     <PackageReference Include="Volo.Abp.EntityFrameworkCore.SqlServer" Version="6.0.1" />
     <PackageReference Include="Volo.Abp.AspNetCore.Serilog" Version="6.0.1" />
+    <PackageReference Include="Volo.Abp.MultiTenancy" Version="6.0.2" />
     <PackageReference Include="Volo.Abp.Swashbuckle" Version="6.0.1" />
     <PackageReference Include="Volo.Abp.PermissionManagement.EntityFrameworkCore" Version="6.0.1" />
     <PackageReference Include="Volo.Abp.SettingManagement.EntityFrameworkCore" Version="6.0.1" />
@@ -32,7 +33,7 @@
     <ProjectReference Include="..\..\src\AdminSSO.HttpApi\AdminSSO.HttpApi.csproj" />
     <ProjectReference Include="..\..\src\AdminSSO.Application\AdminSSO.Application.csproj" />
     <ProjectReference Include="..\..\src\AdminSSO.EntityFrameworkCore\AdminSSO.EntityFrameworkCore.csproj" />
-    <ProjectReference Include="..\AdminSSO.Host.Shared\AdminSSO.Host.Shared.csproj" />
+	<ProjectReference Include="..\AdminSSO.Host.Shared\AdminSSO.Host.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
