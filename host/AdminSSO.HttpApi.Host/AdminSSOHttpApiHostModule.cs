@@ -49,6 +49,7 @@ namespace AdminSSO;
     //typeof(AbpSettingManagementEntityFrameworkCoreModule),
     //typeof(AbpTenantManagementEntityFrameworkCoreModule),
     typeof(AbpAspNetCoreSerilogModule),
+    //typeof(AbpAutoMapperServiceCollectionExtensions),
     typeof(AbpSwashbuckleModule)
     )]
 public class AdminSSOHttpApiHostModule : AbpModule

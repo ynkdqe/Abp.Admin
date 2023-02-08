@@ -102,7 +102,8 @@ namespace AdminSSO.Users
                 else
                 {
                     var input = ObjectMapper.Map<UserInputCreateDto, User>(createDto);
-                    var password = Utility.RandomString(10);
+                    //var password = Utility.RandomString(10);
+                    var password = "123qwe";
                     AuthenticationShared.CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
                     input.Password = Convert.ToBase64String(passwordHash);
                     input.PasswordSalt = Convert.ToBase64String(passwordSalt);
@@ -138,8 +139,28 @@ namespace AdminSSO.Users
         public async Task<AutoGenerateInfoUserDto> AutoGenerateInfoUser(string fullName)
         {
             var result = new AutoGenerateInfoUserDto();
-            result.UserName = Utility.GetUserNameByFullName(fullName);
-            var totalRows = await _userRepository.GetCountAsync();
+            var userName = Utility.GetUserNameByFullName(fullName);
+            var listSameUserName = await _userRepository.GetListAsync(c => c.UserName.Contains(userName));
+            if(listSameUserName != null && listSameUserName.Any())
+            {
+                var autoIncrease = 0;
+                foreach (var item in listSameUserName)
+                {
+                    autoIncrease++;
+                    var tempUser = userName + autoIncrease.ToString();
+                    var exits = listSameUserName.Where(c => c.UserName == tempUser).FirstOrDefault();
+                    if (exits == null)
+                    {
+                        result.UserName = tempUser;
+                        break;
+                    }                       
+                }
+            }
+            else
+            {
+                result.UserName = userName;
+            }
+            var totalRows = await _userRepository.GetCountAsync() + 1;
             result.UserCode = Utility.GetUserCodeByTotalRecords((int)totalRows);
             return result;
         }
@@ -151,7 +172,7 @@ namespace AdminSSO.Users
             var user = await queryUser.Where(c => c.UserName == userName).FirstOrDefaultAsync();
             if(user != null)
             {
-                if(AuthenticationShared.VerifyPasswordHash(password, Encoding.ASCII.GetBytes(user.Password), Encoding.ASCII.GetBytes(user.PasswordSalt)))
+                if(AuthenticationShared.VerifyPasswordHash(password, Convert.FromBase64String(user.Password), Convert.FromBase64String(user.PasswordSalt)))
                 {
                     result.Status = 1;
                     result.Message = "Login Success";
@@ -179,6 +200,7 @@ namespace AdminSSO.Users
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name,user.UserName),
+                new Claim(ClaimTypes.Role, "Admin")
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AuthServer:Token").Value));
             var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
@@ -190,6 +212,7 @@ namespace AdminSSO.Users
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
             return jwt;
         }
+
         //async Task<JwtAuththenticationResponse> Authenticate(string userName,string password)
         //{
         //    // validating username and password

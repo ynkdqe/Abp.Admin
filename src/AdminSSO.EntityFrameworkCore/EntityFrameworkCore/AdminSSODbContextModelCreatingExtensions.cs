@@ -149,7 +149,7 @@ public static class AdminSSODbContextModelCreatingExtensions
             .IsUnicode(false);
 
             entity.Property(e => e.Password)
-            .HasMaxLength(100)
+            .HasMaxLength(500)
             .IsUnicode(false);
 
             entity.Property(e => e.IdentityNo)

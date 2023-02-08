@@ -1,7 +1,13 @@
 {
   "culture": "en",
   "texts": {
-    "MyAccount":  "My account",
-    "SamplePageMessage": "A sample page for the AdminSSO module"
+    "MyAccount": "Tài khoản của tôi",
+    "SamplePageMessage": "Trang mẫu cho mô-đun AdminSSO",
+    "User:010000": "Insert successfully!",
+    "User:010001": "Insert failed.Check details!",
+    "User:010002": "UserName is already!",
+    "User:010003": "UserCode is already!",
+    "User:010004": "Email is already!",
+    "User:010005": "Phone is already!"
   }
 }
