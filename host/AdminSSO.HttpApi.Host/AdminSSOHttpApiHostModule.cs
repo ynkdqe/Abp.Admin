@@ -27,13 +27,10 @@ using Volo.Abp.EntityFrameworkCore.SqlServer;
 using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
 using Volo.Abp.MultiTenancy;
-using Volo.Abp.PermissionManagement.EntityFrameworkCore;
-using Volo.Abp.Security.Claims;
-using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.Swashbuckle;
-using Volo.Abp.TenantManagement.EntityFrameworkCore;
 using Volo.Abp.VirtualFileSystem;
-
+using GraphQL;
+using GraphQLParser;
 namespace AdminSSO;
 
 [DependsOn(
@@ -138,6 +135,7 @@ public class AdminSSOHttpApiHostModule : AbpModule
             dataProtectionBuilder.PersistKeysToStackExchangeRedis(redis, "AdminSSO-Protection-Keys");
         }
 
+        context.Services.AddGraphQLServer();
         context.Services.AddCors(options =>
         {
             options.AddDefaultPolicy(builder =>
