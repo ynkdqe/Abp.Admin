@@ -33,6 +33,10 @@ using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.Swashbuckle;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
 using Volo.Abp.VirtualFileSystem;
+using Swashbuckle.AspNetCore.Filters;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.EntityFrameworkCore;
 
 namespace AdminSSO;
 
@@ -80,19 +84,26 @@ public class AdminSSOHttpApiHostModule : AbpModule
                 options.FileSets.ReplaceEmbeddedByPhysical<AdminSSOApplicationModule>(Path.Combine(hostingEnvironment.ContentRootPath, string.Format("..{0}..{0}src{0}AdminSSO.Application", Path.DirectorySeparatorChar)));
             });
         }
-
-        context.Services.AddAbpSwaggerGenWithOAuth(
-            configuration["AuthServer:Authority"],
-            new Dictionary<string, string>
-            {
-                {"AdminSSO", "AdminSSO API"}
-            },
+        
+        context.Services.AddAbpSwaggerGen(          
             options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo {Title = "AdminSSO API", Version = "v1"});
+                options.SwaggerDoc("v1", new OpenApiInfo {Title = "AdminSSO API", Version = "v1", Description = "Service cung cấp các phương thức xác thực" });
                 options.DocInclusionPredicate((docName, description) => true);
                 options.CustomSchemaIds(type => type.FullName);
-            });
+
+                options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+                {
+                    Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n 
+                      Enter 'Bearer' [space] and then your token in the text input below.
+                      \r\n\r\nExample: 'Bearer 12345abcdef'",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey
+                });
+                options.OperationFilter<SecurityRequirementsOperationFilter>();
+            }
+        );
 
         Configure<AbpLocalizationOptions>(options =>
         {
@@ -118,12 +129,21 @@ public class AdminSSOHttpApiHostModule : AbpModule
             options.Languages.Add(new LanguageInfo("el", "el", "Ελληνικά"));
         });
 
-        context.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        context.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
             .AddJwtBearer(options =>
             {
-                options.Authority = configuration["AuthServer:Authority"];
-                options.RequireHttpsMetadata = Convert.ToBoolean(configuration["AuthServer:RequireHttpsMetadata"]);
-                options.Audience = "AdminSSO";
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
+                        .GetBytes(configuration["AuthServer:Token"])),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
             });
 
         Configure<AbpDistributedCacheOptions>(options =>
@@ -189,9 +209,9 @@ public class AdminSSOHttpApiHostModule : AbpModule
         {
             options.SwaggerEndpoint("/swagger/v1/swagger.json", "Support APP API");
 
-            var configuration = context.GetConfiguration();
-            options.OAuthClientId(configuration["AuthServer:SwaggerClientId"]);
-            options.OAuthScopes("AdminSSO");
+            //var configuration = context.GetConfiguration();
+            //options.OAuthClientId(configuration["AuthServer:SwaggerClientId"]);
+            //options.OAuthScopes("AdminSSO");
         });
         app.UseAuditing();
         app.UseAbpSerilogEnrichers();
