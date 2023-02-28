@@ -27,7 +27,11 @@ using Volo.Abp.EntityFrameworkCore.SqlServer;
 using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
 using Volo.Abp.MultiTenancy;
+using Volo.Abp.PermissionManagement.EntityFrameworkCore;
+using Volo.Abp.Security.Claims;
+using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.Swashbuckle;
+using Volo.Abp.TenantManagement.EntityFrameworkCore;
 using Volo.Abp.VirtualFileSystem;
 using Swashbuckle.AspNetCore.Filters;
 using Microsoft.IdentityModel.Tokens;
@@ -80,11 +84,11 @@ public class AdminSSOHttpApiHostModule : AbpModule
                 options.FileSets.ReplaceEmbeddedByPhysical<AdminSSOApplicationModule>(Path.Combine(hostingEnvironment.ContentRootPath, string.Format("..{0}..{0}src{0}AdminSSO.Application", Path.DirectorySeparatorChar)));
             });
         }
-        
-        context.Services.AddAbpSwaggerGen(          
+
+        context.Services.AddAbpSwaggerGen(
             options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo {Title = "AdminSSO API", Version = "v1", Description = "Service cung cấp các phương thức xác thực" });
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "AdminSSO API", Version = "v1", Description = "Service cung cấp các phương thức xác thực" });
                 options.DocInclusionPredicate((docName, description) => true);
                 options.CustomSchemaIds(type => type.FullName);
 
@@ -126,10 +130,10 @@ public class AdminSSOHttpApiHostModule : AbpModule
         });
 
         context.Services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
             .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
@@ -154,7 +158,6 @@ public class AdminSSOHttpApiHostModule : AbpModule
             dataProtectionBuilder.PersistKeysToStackExchangeRedis(redis, "AdminSSO-Protection-Keys");
         }
 
-        context.Services.AddGraphQLServer();
         context.Services.AddCors(options =>
         {
             options.AddDefaultPolicy(builder =>
