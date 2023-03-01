@@ -1,9 +1,11 @@
 ﻿using AdminSSO.Cities;
 using AdminSSO.Districts;
+using AdminSSO.Models;
 using AdminSSO.UserOtps;
 using AdminSSO.Users;
 using AdminSSO.Wards;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 using Volo.Abp;
 
 namespace AdminSSO.EntityFrameworkCore;
@@ -11,9 +13,9 @@ namespace AdminSSO.EntityFrameworkCore;
 public static class AdminSSODbContextModelCreatingExtensions
 {
     public static void ConfigureAdminSSO(
-        this ModelBuilder builder)
+        this ModelBuilder modelBuilder)
     {
-        Check.NotNull(builder, nameof(builder));
+        Check.NotNull(modelBuilder, nameof(modelBuilder));
 
         /* Configure all entities here. Example:
 
@@ -51,7 +53,7 @@ public static class AdminSSODbContextModelCreatingExtensions
         //    entity.ToTable("UserOtp");
         //});
 
-        builder.Entity<City>(entity =>
+        modelBuilder.Entity<City>(entity =>
         {
             entity.ToTable("City");
             entity.Property(e => e.DateCreated)
@@ -71,7 +73,7 @@ public static class AdminSSODbContextModelCreatingExtensions
                 .IsUnicode(false);
         });
 
-        builder.Entity<District>(entity =>
+        modelBuilder.Entity<District>(entity =>
         {
             entity.ToTable("District");
             entity.Property(e => e.DateCreated)
@@ -87,7 +89,7 @@ public static class AdminSSODbContextModelCreatingExtensions
                 .IsUnicode(false);
         });
 
-        builder.Entity<Ward>(entity =>
+        modelBuilder.Entity<Ward>(entity =>
         {
             entity.ToTable("Ward");
             entity.Property(e => e.DateCreated)
@@ -103,7 +105,7 @@ public static class AdminSSODbContextModelCreatingExtensions
                 .IsUnicode(false);
         });
 
-        builder.Entity<UserOtp>(entity =>
+        modelBuilder.Entity<UserOtp>(entity =>
         {
             entity.ToTable("UserOtp");
             entity.Property(e => e.DateActive).HasColumnType("datetime");
@@ -123,7 +125,7 @@ public static class AdminSSODbContextModelCreatingExtensions
                 .IsUnicode(false);
         });
 
-        builder.Entity<User>(entity =>
+        modelBuilder.Entity<User>(entity =>
         {
             entity.ToTable("User");
             entity.Property(e => e.Id).HasColumnName("ID");
@@ -176,6 +178,103 @@ public static class AdminSSODbContextModelCreatingExtensions
 
             entity.Property(e => e.UserName)
                 .HasMaxLength(30)
+                .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<AuthApp>(entity =>
+        {
+            entity.ToTable("Auth_App");
+
+            entity.Property(e => e.Code)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+
+            entity.Property(e => e.Description).HasMaxLength(500);
+
+            entity.Property(e => e.IsDeleted).HasDefaultValueSql("((0))");
+
+            entity.Property(e => e.Name).HasMaxLength(200);
+        });
+
+        modelBuilder.Entity<Module>(entity =>
+        {
+            entity.Property(e => e.Code)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+
+            entity.Property(e => e.DateCreated).HasColumnType("datetime");
+
+            entity.Property(e => e.DateUpdated).HasColumnType("datetime");
+
+            entity.Property(e => e.IsDeleted).HasDefaultValueSql("((0))");
+
+            entity.Property(e => e.Name).HasMaxLength(500);
+
+            entity.Property(e => e.UpdatedBy)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<Role>(entity =>
+        {
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+
+            entity.Property(e => e.DateCreated)
+                .HasColumnType("datetime")
+                .HasDefaultValueSql("(getdate())");
+
+            entity.Property(e => e.Description).HasMaxLength(500);
+
+            entity.Property(e => e.IsDeleted).HasDefaultValueSql("((0))");
+
+            entity.Property(e => e.Name).HasMaxLength(500);
+
+            entity.Property(e => e.RoleCode)
+                .HasMaxLength(50)
+            .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<RoleMapModule>(entity =>
+        {
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+
+            entity.Property(e => e.DateCreated)
+                .HasColumnType("datetime")
+                .HasDefaultValueSql("(getdate())");
+
+            entity.Property(e => e.DateUpdated).HasColumnType("datetime");
+
+            entity.Property(e => e.IsDeleted).HasDefaultValueSql("((0))");
+
+            entity.Property(e => e.UpdatedBy)
+                .HasMaxLength(100)
+            .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<RoleMapUser>(entity =>
+        {
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+
+            entity.Property(e => e.DateCreated)
+                .HasColumnType("datetime")
+                .HasDefaultValueSql("(getdate())");
+
+            entity.Property(e => e.DateUpdated).HasColumnType("datetime");
+
+            entity.Property(e => e.IsDeleted).HasDefaultValueSql("((0))");
+
+            entity.Property(e => e.UpdatedBy)
+                .HasMaxLength(100)
                 .IsUnicode(false);
         });
     }
