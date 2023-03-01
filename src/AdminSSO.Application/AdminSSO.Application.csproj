@@ -29,7 +29,6 @@
     <Folder Include="Cities\" />
     <Folder Include="Districts\" />
     <Folder Include="UserOtps\" />
-    <Folder Include="Wards\" />
   </ItemGroup>
 
 </Project>

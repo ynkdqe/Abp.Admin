@@ -14,6 +14,7 @@ namespace AdminSSO.Users
         Task<UserDto> Update(UserInputUpdateDto updateDto);
         Task<AutoGenerateInfoUserDto> AutoGenerateInfoUser(string fullName);
         Task<LoginResponse> Login(string userName,string password);
+        Task<UserProfileDto> GetUserProfile(string id);
 
         //Task CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt);
     }

@@ -29,7 +29,7 @@ using Utility = AdminSSO.Utils.Utility;
 
 namespace AdminSSO.Users
 {
-    public class UserAppService : AdminSSOAppService, ITransientDependency, IValidationEnabled, IUserAppService
+    public class UserAppService : AdminSSOAppService, IScopedDependency, IValidationEnabled, IUserAppService
     {
         IUserRepository _userRepository;
         IConfiguration _configuration;

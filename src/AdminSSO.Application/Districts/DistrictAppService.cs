@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AdminSSO.Districts
 {
-    internal class DistrictAppService
+    public class DistrictAppService : AdminSSOAppService
     {
     }
 }
