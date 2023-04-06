@@ -27,7 +27,6 @@
 
   <ItemGroup>
     <Folder Include="Cities\" />
-    <Folder Include="UserOtps\" />
   </ItemGroup>
 
 </Project>
