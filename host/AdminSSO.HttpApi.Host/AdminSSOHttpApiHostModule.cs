@@ -84,11 +84,11 @@ public class AdminSSOHttpApiHostModule : AbpModule
                 options.FileSets.ReplaceEmbeddedByPhysical<AdminSSOApplicationModule>(Path.Combine(hostingEnvironment.ContentRootPath, string.Format("..{0}..{0}src{0}AdminSSO.Application", Path.DirectorySeparatorChar)));
             });
         }
-        
-        context.Services.AddAbpSwaggerGen(          
+
+        context.Services.AddAbpSwaggerGen(
             options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo {Title = "AdminSSO API", Version = "v1", Description = "Service cung cấp các phương thức xác thực" });
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "AdminSSO API", Version = "v1", Description = "Service cung cấp các phương thức xác thực" });
                 options.DocInclusionPredicate((docName, description) => true);
                 options.CustomSchemaIds(type => type.FullName);
 
@@ -130,10 +130,10 @@ public class AdminSSOHttpApiHostModule : AbpModule
         });
 
         context.Services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
             .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters

@@ -2,13 +2,16 @@
 using AdminSSO.Errors;
 using AdminSSO.Utils;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -17,6 +20,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
+using Volo.Abp.Caching;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Http;
 using Volo.Abp.ObjectMapping;
@@ -25,20 +29,23 @@ using Utility = AdminSSO.Utils.Utility;
 
 namespace AdminSSO.Users
 {
-    public class UserAppService : AdminSSOAppService, ITransientDependency, IValidationEnabled, IUserAppService
+    public class UserAppService : AdminSSOAppService, IScopedDependency, IValidationEnabled, IUserAppService
     {
         IUserRepository _userRepository;
         IConfiguration _configuration;
         private readonly ILogger<UserAppService> _log;
-
+        private readonly IDistributedCache<object> _cacheUser;
+        private const string SERVICES_NAME = nameof(UserAppService);
         public UserAppService(IUserRepository userRepository,
             ILogger<UserAppService> log,
-            IConfiguration configuration
+            IConfiguration configuration,
+            IDistributedCache<object> cacheUser
             )
         {
             _userRepository = userRepository;
             _log = log;
             _configuration = configuration;
+            _cacheUser = cacheUser;
 
         }
 
@@ -53,7 +60,28 @@ namespace AdminSSO.Users
 
         public async Task<UserDto> GetUserById(int Id)
         {
+            var key = SERVICES_NAME + "_" + "GetUserById" + "_" + Id.ToString();
+            var data = await _cacheUser.GetAsync(key);
+            if(data != null)
+            {
+                return JsonConvert.DeserializeObject<UserDto>(data.ToString());
+            }
+            
+            //return await _cacheUser.GetOrAddAsync(
+            //    SERVICES_NAME + "_" + "GetUserById" + "_" + Id.ToString(), //Cache key
+            //    async () => 
+            //    {
+            //        Console.WriteLine("Get data from database");
+            //        var user = await _userRepository.GetAsync(c => c.Id == Id);
+            //        return ObjectMapper.Map<User, UserDto>(user);
+            //    },
+            //    () => new DistributedCacheEntryOptions
+            //    {
+            //        AbsoluteExpiration = DateTimeOffset.Now.AddHours(1)
+            //    }
+            //);
             var user = await _userRepository.GetAsync(c=>c.Id == Id);
+            await _cacheUser.SetAsync(key, user);
             return ObjectMapper.Map<User, UserDto>(user);
         }
 

@@ -9,6 +9,9 @@
 
   <ItemGroup>
     <PackageReference Include="Volo.Abp.EntityFrameworkCore" Version="6.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\AdminSSO.Domain\AdminSSO.Domain.csproj" />
   </ItemGroup>
 

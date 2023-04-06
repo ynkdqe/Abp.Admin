@@ -1,5 +1,6 @@
 ﻿using AdminSSO.Dtos;
 using AdminSSO.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -35,12 +36,14 @@ namespace AdminSSO.UserControllers
             return await _userAppService.Create(createDto);
         }
         [HttpGet]
+        [Authorize]
         [Route("get-list")]
         public async Task<CustomPagedResultDto<UserDto>> GetList(UserInputSearchDto searchDto)
         {
             return await _userAppService.GetList(searchDto);
         }
         [HttpGet]
+        [Authorize()]
         [Route("get-by-id")]
         public async Task<UserDto> GetUserById(int Id)
         {
@@ -58,7 +61,9 @@ namespace AdminSSO.UserControllers
         //{
         //    throw new NotImplementedException();
         //}
+
         [HttpPut]
+        [Authorize]
         public Task<UserDto> Update(UserInputUpdateDto updateDto)
         {
             throw new NotImplementedException();

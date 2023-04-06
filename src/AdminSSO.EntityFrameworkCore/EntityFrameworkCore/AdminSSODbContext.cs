@@ -1,5 +1,10 @@
-﻿using AdminSSO.Cities;
+﻿using AdminSSO.AuthApps;
+using AdminSSO.Cities;
 using AdminSSO.Districts;
+using AdminSSO.Modules;
+using AdminSSO.RoleMapModules;
+using AdminSSO.RoleMapUsers;
+using AdminSSO.Roles;
 using AdminSSO.UserOtps;
 using AdminSSO.Users;
 using AdminSSO.Wards;
@@ -22,6 +27,11 @@ public class AdminSSODbContext : AbpDbContext<AdminSSODbContext>, IAdminSSODbCon
     public DbSet<Ward> Wards { get; set; }
     public DbSet<UserOtp> UserOtps { get; set; }
     public DbSet<User> Users { get; set; }
+    public virtual DbSet<AuthApp> AuthApps { get; set; }
+    public virtual DbSet<Module> Modules { get; set; }
+    public virtual DbSet<Role> Roles { get; set; }
+    public virtual DbSet<RoleMapModule> RoleMapModules { get; set; }
+    public virtual DbSet<RoleMapUser> RoleMapUsers { get; set; }
 
     #endregion
     public AdminSSODbContext(DbContextOptions<AdminSSODbContext> options)
