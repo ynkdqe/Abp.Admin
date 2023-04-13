@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AdminSSO.Modules;
+using AdminSSO.Roles;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Volo.Abp.Application.Dtos;
@@ -30,5 +32,7 @@ namespace AdminSSO.Users
         public string WardNameAscii { get; set; }
         public string Address { get; set; }
         public bool? IsActive { get; set; }
+        public RoleDto Roles { get; set; }
+        public List<ModuleDto> Modules { get; set; }
     }
 }

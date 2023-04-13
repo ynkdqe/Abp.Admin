@@ -1,5 +1,8 @@
 ﻿using AdminSSO.Dtos;
 using AdminSSO.Errors;
+using AdminSSO.Modules;
+using AdminSSO.RoleMapModuleDtos;
+using AdminSSO.Roles;
 using AdminSSO.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
@@ -35,18 +38,25 @@ namespace AdminSSO.Users
         IConfiguration _configuration;
         private readonly ILogger<UserAppService> _log;
         private readonly IDistributedCache<object> _cacheUser;
+        private readonly IRoleAppService _roleAppService;
+        private readonly IRoleMapModuleAppService _roleMapModuleAppService;
+        private readonly IModuleAppService _moduleAppService;
         private const string SERVICES_NAME = nameof(UserAppService);
         public UserAppService(IUserRepository userRepository,
             ILogger<UserAppService> log,
             IConfiguration configuration,
-            IDistributedCache<object> cacheUser
+            IDistributedCache<object> cacheUser,
+            IRoleAppService roleAppService,
+            IRoleMapModuleAppService roleMapModuleAppService,
+            IModuleAppService moduleAppService,
             )
         {
             _userRepository = userRepository;
             _log = log;
             _configuration = configuration;
             _cacheUser = cacheUser;
-
+            _roleAppService = roleAppService;
+            _roleMapModuleAppService = 
         }
 
         //public async Task<List<UserDto>> GetList()
@@ -202,6 +212,7 @@ namespace AdminSSO.Users
             {
                 if(AuthenticationShared.VerifyPasswordHash(password, Convert.FromBase64String(user.Password), Convert.FromBase64String(user.PasswordSalt)))
                 {
+                    var roleBase = 
                     result.Status = 1;
                     result.Message = "Login Success";
                     result.Token = CreateToken(user);
@@ -233,6 +244,7 @@ namespace AdminSSO.Users
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AuthServer:Token").Value));
             var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
             var token = new JwtSecurityToken(
+                
                 claims: claims, 
                 expires: DateTime.Now.AddMinutes(30),
                 signingCredentials: cred
@@ -241,59 +253,9 @@ namespace AdminSSO.Users
             return jwt;
         }
 
-        //async Task<JwtAuththenticationResponse> Authenticate(string userName,string password)
-        //{
-        //    // validating username and password
-        //    var user = await _userRepository.GetAsync(c=>c.UserName == userName && c.Password == password);
-        //    if(user != null)
-        //    {
-        //        var tokenExpiry = DateTime.Now.AddMinutes(Constants.JWT_TOKEN_VALIDITY_MINS);
-        //        var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
-        //        var tokenKey = Encoding.ASCII.GetBytes(Constants.JWT_SECURITY_KEY);
-        //        var securityTokenDescription = new SecurityTokenDescriptor
-        //        {
-        //            Subject = new System.Security.Claims.ClaimsIdentity(new List<Claim>
-        //            {
-        //                new Claim("username", userName),
-        //                new Claim(ClaimTypes.PrimaryGroupSid, user.UserCode),
-
-        //            }),
-        //            Expires = tokenExpiry,
-        //            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey),SecurityAlgorithms.HmacSha256Signature)
-        //        };
-        //        var securityToken = jwtSecurityTokenHandler.CreateToken(securityTokenDescription);
-        //        var token = jwtSecurityTokenHandler.WriteToken(securityToken);
-        //        return new JwtAuththenticationResponse
-        //        {
-        //            token = token,
-        //            user_name = userName,
-        //            expires_in = (int)tokenExpiry.Subtract(DateTime.Now).TotalSeconds
-        //        };
-        //    }
-        //    else
-        //    {
-        //        return null;
-        //    }
-        //}
-
-        //public LoginResponse Login(string userName, string password)
-        //{
-        //    var auth = Authenticate(userName, password);
-        //    return OkObjectResult(auth);
-        //}
-
-        //void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
-        //{
-        //    using(var hmac = new HMACSHA256())
-        //    {
-        //        passwordSalt = hmac.Key;
-        //        passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-        //    }
-        //}
-
-        //public Task<UserDto> Register(UserInputCreateDto input)
-        //{
-        //    CreatePasswordHash
-        //}
+        public Task<UserProfileDto> GetUserProfile(string id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

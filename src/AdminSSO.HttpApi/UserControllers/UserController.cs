@@ -49,6 +49,15 @@ namespace AdminSSO.UserControllers
         {
             return await _userAppService.GetUserById(Id);
         }
+        [HttpGet]
+        [Authorize()]
+        [Route("get-profile")]
+        public Task<UserProfileDto> GetUserProfile(string id)
+        {
+            var user = AuthenticationShared.GetUserFromTokenJWT(id);
+            return null;
+        }
+
         [HttpPost]
         [Route("login")]
         public async Task<LoginResponse> Login(string userName, string password)
