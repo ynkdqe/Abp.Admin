@@ -48,7 +48,7 @@ namespace AdminSSO.Users
             IDistributedCache<object> cacheUser,
             IRoleAppService roleAppService,
             IRoleMapModuleAppService roleMapModuleAppService,
-            IModuleAppService moduleAppService,
+            IModuleAppService moduleAppService
             )
         {
             _userRepository = userRepository;
@@ -56,7 +56,8 @@ namespace AdminSSO.Users
             _configuration = configuration;
             _cacheUser = cacheUser;
             _roleAppService = roleAppService;
-            _roleMapModuleAppService = 
+            _roleMapModuleAppService = roleMapModuleAppService;
+            _moduleAppService = moduleAppService;
         }
 
         //public async Task<List<UserDto>> GetList()
