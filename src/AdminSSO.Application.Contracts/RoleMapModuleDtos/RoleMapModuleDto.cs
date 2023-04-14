@@ -5,7 +5,7 @@ using Volo.Abp.Application.Dtos;
 
 namespace AdminSSO.RoleMapModuleDtos
 {
-    public class RoleMapModuleDtos : EntityDto<int>
+    public class RoleMapModuleDto : EntityDto<int>
     {
         public int? RoleId { get; set; }
         public int? ModuleId { get; set; }

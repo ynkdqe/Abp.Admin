@@ -47,18 +47,34 @@ namespace AdminSSO.RoleMapModules
             _roleMapUser = roleMapUser;
         }
 
-        public async Task<RoleMapModuleDtos.RoleMapModuleDtos> GetRoleByUser(string userId)
+        public async Task<List<ModuleByRoleDto>> GetRoleByUser(int userId)
         {
             var queryRoleMapUser = await _roleMapUser.GetQueryableAsync();
+            
             var queryRole = await _role.GetQueryableAsync();
             var queryModule = await _module.GetQueryableAsync();
             var queryRoleMapModule = await _roleMapModule.GetQueryableAsync();
             var queryUser = await _userRepository.GetQueryableAsync();
-            var userRole = await (from a in queryUser
-                                  join b in queryRoleMapUser on a.Id equals b.UserId
-                                  where a.UserName == userId
-                                  select b.Id).FirstOrDefaultAsync();
-            return null;
+
+            var userRole = await _roleMapUser.GetAsync(c=>c.UserId == userId);
+            if (userRole != null)
+            {
+                return await (from a in queryRoleMapModule
+                              join b in queryRole on a.RoleId equals b.Id
+                              join c in queryModule on a.ModuleId equals c.Id
+                              where a.RoleId == userRole.Id && b.IsActived == true && b.IsDeleted == false && c.IsActived == true && c.IsDeleted == false
+                              select new ModuleByRoleDto
+                              {
+                                  Id = a.Id,
+                                  RoleModule = !string.IsNullOrEmpty(a.ActionOfRole) ? a.ActionOfRole : c.Action,
+                                  RoleCode = b.RoleCode,
+                                  RoleId = a.RoleId.Value
+                              }).ToListAsync();
+
+            }
+            else
+                return null;
+           
         }
     }
 }

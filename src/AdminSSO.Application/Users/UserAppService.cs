@@ -38,26 +38,20 @@ namespace AdminSSO.Users
         IConfiguration _configuration;
         private readonly ILogger<UserAppService> _log;
         private readonly IDistributedCache<object> _cacheUser;
-        private readonly IRoleAppService _roleAppService;
         private readonly IRoleMapModuleAppService _roleMapModuleAppService;
-        private readonly IModuleAppService _moduleAppService;
         private const string SERVICES_NAME = nameof(UserAppService);
         public UserAppService(IUserRepository userRepository,
             ILogger<UserAppService> log,
             IConfiguration configuration,
             IDistributedCache<object> cacheUser,
-            IRoleAppService roleAppService,
-            IRoleMapModuleAppService roleMapModuleAppService,
-            IModuleAppService moduleAppService
+            IRoleMapModuleAppService roleMapModuleAppService
             )
         {
             _userRepository = userRepository;
             _log = log;
             _configuration = configuration;
             _cacheUser = cacheUser;
-            _roleAppService = roleAppService;
             _roleMapModuleAppService = roleMapModuleAppService;
-            _moduleAppService = moduleAppService;
         }
 
         //public async Task<List<UserDto>> GetList()
@@ -213,10 +207,11 @@ namespace AdminSSO.Users
             {
                 if(AuthenticationShared.VerifyPasswordHash(password, Convert.FromBase64String(user.Password), Convert.FromBase64String(user.PasswordSalt)))
                 {
-                    var roleBase = 
+                    var roleBase = await _roleMapModuleAppService.GetRoleByUser(user.Id);
+
                     result.Status = 1;
                     result.Message = "Login Success";
-                    result.Token = CreateToken(user);
+                    result.Token = CreateToken(user, roleBase);
                 }
                 else
                 {
@@ -235,12 +230,15 @@ namespace AdminSSO.Users
             return result;
         }
 
-        string CreateToken(User user)
+        string CreateToken(User user,List<ModuleByRoleDto> roleBase)
         {
-            List<Claim> claims = new List<Claim>
+            var role = roleBase != null && roleBase.Any() ? roleBase.Select(c => c.RoleCode).FirstOrDefault() : string.Empty;
+            List <Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name,user.UserName),
-                new Claim(ClaimTypes.Role, "Admin")
+                new Claim(ClaimTypes.Role, role),                           
+                new Claim(ClaimTypes.Email, user.Email),         
+                new Claim(ClaimTypes.MobilePhone, user.Phone)
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AuthServer:Token").Value));
             var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);

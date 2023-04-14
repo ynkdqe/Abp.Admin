@@ -6,8 +6,7 @@ using Volo.Abp.Domain.Entities;
 namespace AdminSSO.RoleMapUsers
 {
     public partial class RoleMapUser:Entity<int>
-    {
-       
+    {       
         public int? UserId { get; set; }
         public int? RoleId { get; set; }
         public int? Type { get; set; }

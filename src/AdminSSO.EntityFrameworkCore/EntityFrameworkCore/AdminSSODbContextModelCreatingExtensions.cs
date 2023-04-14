@@ -201,6 +201,7 @@ public static class AdminSSODbContextModelCreatingExtensions
 
         modelBuilder.Entity<Module>(entity =>
         {
+            entity.ToTable("Module");
             entity.Property(e => e.Code)
                 .HasMaxLength(20)
                 .IsUnicode(false);
@@ -224,6 +225,7 @@ public static class AdminSSODbContextModelCreatingExtensions
 
         modelBuilder.Entity<Role>(entity =>
         {
+            entity.ToTable("Role");
             entity.Property(e => e.CreatedBy)
                 .HasMaxLength(100)
                 .IsUnicode(false);
@@ -245,6 +247,7 @@ public static class AdminSSODbContextModelCreatingExtensions
 
         modelBuilder.Entity<RoleMapModule>(entity =>
         {
+            entity.ToTable("RoleMapModule");
             entity.Property(e => e.CreatedBy)
                 .HasMaxLength(100)
                 .IsUnicode(false);
@@ -264,6 +267,7 @@ public static class AdminSSODbContextModelCreatingExtensions
 
         modelBuilder.Entity<RoleMapUser>(entity =>
         {
+            entity.ToTable("RoleMapUser");
             entity.Property(e => e.CreatedBy)
                 .HasMaxLength(100)
                 .IsUnicode(false);
