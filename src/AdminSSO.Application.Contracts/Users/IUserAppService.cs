@@ -13,7 +13,7 @@ namespace AdminSSO.Users
         Task<CreateUserResponseDto> Create(UserInputCreateDto createDto);
         Task<UserDto> Update(UserInputUpdateDto updateDto);
         Task<AutoGenerateInfoUserDto> AutoGenerateInfoUser(string fullName);
-        Task<LoginResponse> Login(string userName,string password);
+        Task<LoginResponse> Login(string userName,string password, bool? rememberMe);
         Task<UserProfileDto> GetUserProfile(string id);
 
         //Task CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt);

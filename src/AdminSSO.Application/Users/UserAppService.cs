@@ -1,9 +1,11 @@
 ﻿using AdminSSO.Dtos;
+using AdminSSO.Enums;
 using AdminSSO.Errors;
 using AdminSSO.Modules;
 using AdminSSO.RoleMapModuleDtos;
 using AdminSSO.Roles;
 using AdminSSO.Utils;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +20,7 @@ using System.Net;
 using System.Runtime.InteropServices;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -39,12 +42,15 @@ namespace AdminSSO.Users
         private readonly ILogger<UserAppService> _log;
         private readonly IDistributedCache<object> _cacheUser;
         private readonly IRoleMapModuleAppService _roleMapModuleAppService;
+        private readonly IHttpContextAccessor _contextAccessor;
         private const string SERVICES_NAME = nameof(UserAppService);
+        public static User user = new User();
         public UserAppService(IUserRepository userRepository,
             ILogger<UserAppService> log,
             IConfiguration configuration,
             IDistributedCache<object> cacheUser,
-            IRoleMapModuleAppService roleMapModuleAppService
+            IRoleMapModuleAppService roleMapModuleAppService,
+            IHttpContextAccessor contextAccessor
             )
         {
             _userRepository = userRepository;
@@ -52,16 +58,8 @@ namespace AdminSSO.Users
             _configuration = configuration;
             _cacheUser = cacheUser;
             _roleMapModuleAppService = roleMapModuleAppService;
+            _contextAccessor = contextAccessor;
         }
-
-        //public async Task<List<UserDto>> GetList()
-        //{
-        //    var result = new CustomPagedResultDto<UserDto>();
-        //    var list = await _userRepository.GetListAsync();
-
-
-        //    return ObjectMapper.Map<List<User>, List<UserDto>>(list);
-        //}
 
         public async Task<UserDto> GetUserById(int Id)
         {
@@ -71,7 +69,7 @@ namespace AdminSSO.Users
             {
                 return JsonConvert.DeserializeObject<UserDto>(data.ToString());
             }
-            
+
             //return await _cacheUser.GetOrAddAsync(
             //    SERVICES_NAME + "_" + "GetUserById" + "_" + Id.ToString(), //Cache key
             //    async () => 
@@ -85,6 +83,7 @@ namespace AdminSSO.Users
             //        AbsoluteExpiration = DateTimeOffset.Now.AddHours(1)
             //    }
             //);
+            
             var user = await _userRepository.GetAsync(c=>c.Id == Id);
             await _cacheUser.SetAsync(key, user);
             return ObjectMapper.Map<User, UserDto>(user);
@@ -198,7 +197,7 @@ namespace AdminSSO.Users
             return result;
         }
 
-        public async Task<LoginResponse> Login(string userName, string password)
+        public async Task<LoginResponse> Login(string userName, string password, bool? rememberMe)
         {
             var result = new LoginResponse();
             var queryUser = await _userRepository.GetQueryableAsync();
@@ -208,21 +207,22 @@ namespace AdminSSO.Users
                 if(AuthenticationShared.VerifyPasswordHash(password, Convert.FromBase64String(user.Password), Convert.FromBase64String(user.PasswordSalt)))
                 {
                     var roleBase = await _roleMapModuleAppService.GetRoleByUser(user.Id);
-
-                    result.Status = 1;
+                    result.Status = (int)StatusCodeShared.Success;
                     result.Message = "Login Success";
-                    result.Token = CreateToken(user, roleBase);
+                    result.Token = CreateToken(user, rememberMe);
+                    result.User = user;
+                    result.Permissions = roleBase;
                 }
                 else
                 {
-                    result.Status = 10;
+                    result.Status = (int)StatusCodeShared.Error;
                     result.Message = "Password is invalid";
                     result.Token = String.Empty;
                 }
             }
             else
             {
-                result.Status = 11;
+                result.Status = (int)StatusCodeShared.Error;
                 result.Message = "User not exits";
                 result.Token = "";
 
@@ -230,22 +230,19 @@ namespace AdminSSO.Users
             return result;
         }
 
-        string CreateToken(User user,List<ModuleByRoleDto> roleBase)
+        string CreateToken(User user,bool? rememberMe)
         {
-            var role = roleBase != null && roleBase.Any() ? roleBase.Select(c => c.RoleCode).FirstOrDefault() : string.Empty;
             List <Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name,user.UserName),
-                new Claim(ClaimTypes.Role, role),                           
-                new Claim(ClaimTypes.Email, user.Email),         
-                new Claim(ClaimTypes.MobilePhone, user.Phone)
+                new Claim(ClaimTypes.Name,user.UserName),                           
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),                           
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AuthServer:Token").Value));
             var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-            var token = new JwtSecurityToken(
-                
+            var expired = rememberMe.HasValue && rememberMe.Value ? DateTime.Now.AddDays(7) : DateTime.Now.AddHours(2);
+            var token = new JwtSecurityToken(               
                 claims: claims, 
-                expires: DateTime.Now.AddMinutes(30),
+                expires: expired,
                 signingCredentials: cred
                 );
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);

@@ -1,5 +1,6 @@
 ﻿using AdminSSO.Cities;
 using AdminSSO.Districts;
+using AdminSSO.Modules;
 using AdminSSO.UseroOtps;
 using AdminSSO.UserOtps;
 using AdminSSO.Users;
@@ -40,5 +41,7 @@ public class AdminSSOApplicationAutoMapperProfile : Profile
         CreateMap<DistrictDto, District>();
         CreateMap<Ward, WardDto>();
         CreateMap<WardDto, Ward>();
+        CreateMap<Module, ModuleDto>();
+        CreateMap<ModuleDto, Module>();
     }
 }

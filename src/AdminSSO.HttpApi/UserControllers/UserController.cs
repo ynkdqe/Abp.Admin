@@ -1,4 +1,5 @@
-﻿using AdminSSO.Dtos;
+﻿using AdminSSO.Authorizations;
+using AdminSSO.Dtos;
 using AdminSSO.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,13 +10,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Volo.Abp;
+using Volo.Abp.Authorization.Permissions;
+using static AdminSSO.Permissions.AdminSSOPermissions;
 
 namespace AdminSSO.UserControllers
 {
     [Area(AdminSSORemoteServiceConsts.ModuleName)]
     [RemoteService(Name = AdminSSORemoteServiceConsts.RemoteServiceName)]
     [Route("api/user")]
-    public class UserController : AdminSSOController, IUserAppService
+    public class UserController : AdminSSOController
     {
         IUserAppService _userAppService;
         public UserController(IUserAppService userAppService)
@@ -31,6 +34,7 @@ namespace AdminSSO.UserControllers
         }
 
         [HttpPost]
+        [CheckPermission(UserPermissions.Create)]
         public async Task<CreateUserResponseDto> Create(UserInputCreateDto createDto)
         {
             return await _userAppService.Create(createDto);
@@ -38,6 +42,7 @@ namespace AdminSSO.UserControllers
         [HttpGet]
         [Authorize]
         [Route("get-list")]
+        [CheckPermission(UserPermissions.View)]
         public async Task<CustomPagedResultDto<UserDto>> GetList(UserInputSearchDto searchDto)
         {
             return await _userAppService.GetList(searchDto);
@@ -52,17 +57,19 @@ namespace AdminSSO.UserControllers
         [HttpGet]
         [Authorize()]
         [Route("get-profile")]
+        
         public Task<UserProfileDto> GetUserProfile(string id)
         {
             var user = AuthenticationShared.GetUserFromTokenJWT(id);
+
             return null;
         }
 
         [HttpPost]
         [Route("login")]
-        public async Task<LoginResponse> Login(string userName, string password)
+        public async Task<LoginResponse> Login(LoginResquest resquest)
         {
-            return await _userAppService.Login(userName, password);
+            return await _userAppService.Login(resquest.UserName, resquest.Password, resquest.RememberMe);
         }
 
         //[HttpPost]
@@ -73,6 +80,7 @@ namespace AdminSSO.UserControllers
 
         [HttpPut]
         [Authorize]
+        [CheckPermission(UserPermissions.Edit)]
         public Task<UserDto> Update(UserInputUpdateDto updateDto)
         {
             throw new NotImplementedException();

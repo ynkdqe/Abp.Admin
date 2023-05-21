@@ -9,6 +9,6 @@ namespace AdminSSO.RoleMapModuleDtos
 {
     public interface IRoleMapModuleAppService : IApplicationService, ISingletonDependency
     {
-        Task<List<ModuleByRoleDto>> GetRoleByUser(int userId);
+        Task<List<string>> GetRoleByUser(int userId);
     }
 }

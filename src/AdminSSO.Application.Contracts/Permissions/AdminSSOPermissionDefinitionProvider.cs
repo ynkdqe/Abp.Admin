@@ -8,7 +8,12 @@ public class AdminSSOPermissionDefinitionProvider : PermissionDefinitionProvider
 {
     public override void Define(IPermissionDefinitionContext context)
     {
-        var myGroup = context.AddGroup(AdminSSOPermissions.GroupName, L("Permission:AdminSSO"));
+        var user = context.AddGroup(AdminSSOPermissions.GroupName, L("Permission:AdminSSO"));
+        user.AddPermission("Admin.User.View", L("View"));
+        user.AddPermission("Admin.User.Create", L("Create"));
+        user.AddPermission("Admin.User.Update", L("Update"));
+        user.AddPermission("Admin.User.Delete", L("Delete"));
+        user.AddPermission("Admin.User.GetProfile", L("GetProfile"));
     }
 
     private static LocalizableString L(string name)

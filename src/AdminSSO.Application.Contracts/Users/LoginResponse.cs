@@ -9,6 +9,7 @@ namespace AdminSSO.Users
         public int Status { get; set; }
         public string Message { get; set; }
         public string Token { get; set; }
-        public int Expired { get; set; }
+        public object User { get; set; }
+        public List<string> Permissions { get; set; }
     }
 }

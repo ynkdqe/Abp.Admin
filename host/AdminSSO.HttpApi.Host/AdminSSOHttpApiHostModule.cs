@@ -105,6 +105,7 @@ public class AdminSSOHttpApiHostModule : AbpModule
             }
         );
 
+        context.Services.AddAuthorization();
         Configure<AbpLocalizationOptions>(options =>
         {
             options.Languages.Add(new LanguageInfo("ar", "ar", "العربية"));

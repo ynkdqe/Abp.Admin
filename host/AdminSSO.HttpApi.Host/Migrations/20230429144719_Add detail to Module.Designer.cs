@@ -4,6 +4,7 @@ using AdminSSO.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Volo.Abp.EntityFrameworkCore;
 
@@ -12,9 +13,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace AdminSSO.Migrations
 {
     [DbContext(typeof(AdminSSOHttpApiHostMigrationsDbContext))]
-    partial class AdminSSOHttpApiHostMigrationsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230429144719_Add detail to Module")]
+    partial class AdddetailtoModule
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

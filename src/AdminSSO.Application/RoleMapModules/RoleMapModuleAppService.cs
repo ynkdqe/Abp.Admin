@@ -6,6 +6,7 @@ using AdminSSO.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,8 +48,9 @@ namespace AdminSSO.RoleMapModules
             _roleMapUser = roleMapUser;
         }
 
-        public async Task<List<ModuleByRoleDto>> GetRoleByUser(int userId)
+        public async Task<List<string>> GetRoleByUser(int userId)
         {
+            var result = new List<string>();
             var queryRoleMapUser = await _roleMapUser.GetQueryableAsync();
             
             var queryRole = await _role.GetQueryableAsync();
@@ -59,7 +61,7 @@ namespace AdminSSO.RoleMapModules
             var userRole = await _roleMapUser.GetAsync(c=>c.UserId == userId);
             if (userRole != null)
             {
-                return await (from a in queryRoleMapModule
+                var listPolicy = await (from a in queryRoleMapModule
                               join b in queryRole on a.RoleId equals b.Id
                               join c in queryModule on a.ModuleId equals c.Id
                               where a.RoleId == userRole.Id && b.IsActived == true && b.IsDeleted == false && c.IsActived == true && c.IsDeleted == false
@@ -70,10 +72,16 @@ namespace AdminSSO.RoleMapModules
                                   RoleCode = b.RoleCode,
                                   RoleId = a.RoleId.Value
                               }).ToListAsync();
-
+                if(listPolicy != null && listPolicy.Any())
+                {
+                    foreach (var item in listPolicy.Where(c=> !string.IsNullOrEmpty(c.RoleModule)))
+                    {
+                        var listItem = JsonConvert.DeserializeObject<List<string>>(item.RoleModule);
+                        result.AddRange(listItem);
+                    }
+                }
             }
-            else
-                return null;
+            return result;
            
         }
     }

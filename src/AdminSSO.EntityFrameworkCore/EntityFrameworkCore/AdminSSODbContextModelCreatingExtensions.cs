@@ -217,6 +217,9 @@ public static class AdminSSODbContextModelCreatingExtensions
             entity.Property(e => e.IsDeleted).HasDefaultValueSql("((0))");
 
             entity.Property(e => e.Name).HasMaxLength(500);
+            entity.Property(e => e.Path).HasMaxLength(100).IsUnicode(false);
+            entity.Property(e => e.Icon).HasMaxLength(100).IsUnicode(false);
+            entity.Property(e => e.CssClass).HasMaxLength(100).IsUnicode(false);
 
             entity.Property(e => e.UpdatedBy)
                 .HasMaxLength(100)
